@@ -1,6 +1,6 @@
 
 from django.db import models
-
+#sss
 
 class Amplua(models.Model):
     amplua = models.CharField(max_length=45)
