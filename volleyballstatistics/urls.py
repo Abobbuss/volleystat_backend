@@ -15,7 +15,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from appstatistics.views import index, TeamAPIView, CoachAPIView, UserAPIView, TeamOnTournamentAPIView
+from appstatistics.views import index, TeamAPIView, CoachAPIView, UserAPIView, TeamOnTournamentAPIView, \
+    TournamentAPIView
 from drf_yasg.views import get_schema_view as swagger_get_shema_view
 from drf_yasg import openapi
 
@@ -37,6 +38,7 @@ urlpatterns = [
              path('teams/', TeamAPIView.as_view()),#Все команды
              path('coach/<int:pk>/', CoachAPIView.as_view()),#Тренер с определенным pk = id
              path('user/<int:pk>/', UserAPIView.as_view()),#Юзер с определенным pk = id
+             path('tournaments', TournamentAPIView.as_view()),
              path('teamontournament/', TeamOnTournamentAPIView.as_view())
          ])),
 

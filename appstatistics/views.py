@@ -4,8 +4,9 @@ from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .models import Team, Coach, User, TeamOnTournament
-from .serializers import TeamsSerializer, CoachSerializer, UserSerializer, TeamOnTournamentSerializer
+from .models import Team, Coach, User, TeamOnTournament, Tournament
+from .serializers import TeamsSerializer, CoachSerializer, UserSerializer, TeamOnTournamentSerializer, \
+    TournamentSerializer
 
 
 def index(request):
@@ -15,6 +16,11 @@ def index(request):
 class TeamAPIView(generics.ListAPIView):
     queryset = Team.objects.all()
     serializer_class = TeamsSerializer
+
+    def list(self, request, *args, **kwargs):
+        res = super(TeamAPIView, self).list(request, *args, **kwargs)
+        res.data = {'data': res.data}
+        return res
 
 
 class CoachAPIView(generics.ListAPIView):
@@ -35,6 +41,14 @@ class UserAPIView(generics.ListAPIView):
         user = User.objects.get(id=pk)
         serializer = UserSerializer(user)
         return Response(serializer.data)
+
+class TournamentAPIView(generics.ListAPIView):
+    serializer_class = TournamentSerializer
+    queryset = Tournament.objects.all()
+    def list(self, request, *args, **kwargs):
+        res = super(TournamentAPIView, self).list(request, *args, **kwargs)
+        res.data = {'data': res.data}
+        return res
 
 class TeamOnTournamentAPIView(APIView):
     queryset = Team.objects.all()

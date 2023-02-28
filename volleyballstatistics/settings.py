@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-2@n%@!7+jfx^(+n*z*u=2lsg_u_x_@2xq31v44*5n233b@3j*%
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['vparipwf.beget.tech']
+ALLOWED_HOSTS = ['vparipwf.beget.tech', '127.0.0.1']
 
 
 # Application definition
@@ -84,9 +84,9 @@ WSGI_APPLICATION = 'volleyballstatistics.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'vparipwf_mydb',
-        'USER': 'vparipwf_mydb',
-        'PASSWORD': 'Root123',
+        'NAME': 'mydbnew', #vparipwf_mydb
+        'USER': 'root',
+        'PASSWORD': 'mOrzat33!!',
         'HOST': 'localhost',
         'PORT': '3306',
     }
@@ -139,5 +139,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ORIGIN_ALLOW_ALL = True
 
 CORS_ALLOWED_ORIGINS = [
-    '37.21.204.27',
+    #'37.21.204.27',
+    'http://localhost:3000',
 ]
