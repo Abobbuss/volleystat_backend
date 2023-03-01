@@ -9,3 +9,5 @@ routerTeamOnTournament.register(r'teamOnTournaments', views.TeamOnTournamentAPIV
 
 routerUser = routers.SimpleRouter()
 routerUser.register(r'user', views.UserAPIViewSet)
+
+#sss
