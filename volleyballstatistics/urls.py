@@ -13,12 +13,14 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.conf import settings
+from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
-from appstatistics.views import index, TeamAPIView, CoachAPIView, UserAPIView, TeamOnTournamentAPIView, \
-    TournamentAPIView
+from appstatistics import views
 from drf_yasg.views import get_schema_view as swagger_get_shema_view
 from drf_yasg import openapi
+from appstatistics import routers
 
 shema_view = swagger_get_shema_view(
     openapi.Info(
@@ -31,15 +33,18 @@ shema_view = swagger_get_shema_view(
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('teams/', index),
+    path('teams/', views.index),
     path('api/v1/',
          include([
              path('swagger/shema/', shema_view.with_ui('swagger', cache_timeout=0)),#Все апишки
-             path('teams/', TeamAPIView.as_view()),#Все команды
-             path('coach/<int:pk>/', CoachAPIView.as_view()),#Тренер с определенным pk = id
-             path('user/<int:pk>/', UserAPIView.as_view()),#Юзер с определенным pk = id
-             path('tournaments', TournamentAPIView.as_view()),
-             path('teamontournament/', TeamOnTournamentAPIView.as_view())
+             path('', include(routers.routerTeams.urls)),
+             path('coach/<int:pk>/', views.CoachAPIView.as_view()),
+             path('', include(routers.routerUser.urls)),
+             path('tournaments', views.TournamentAPIView.as_view()),
+             path('', include(routers.routerTeamOnTournament.urls))
          ])),
 
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

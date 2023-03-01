@@ -2,69 +2,58 @@ from django.forms import model_to_dict
 from django.shortcuts import render
 from rest_framework import generics
 from rest_framework.response import Response
-from rest_framework.views import APIView
+from rest_framework import viewsets
 
-from .models import Team, Coach, User, TeamOnTournament, Tournament
-from .serializers import TeamsSerializer, CoachSerializer, UserSerializer, TeamOnTournamentSerializer, \
-    TournamentSerializer
+from . import models
+from . import serializers
 
 
 def index(request):
     return render(request, 'appstatistics/index.html')
 
 
-class TeamAPIView(generics.ListAPIView):
-    queryset = Team.objects.all()
-    serializer_class = TeamsSerializer
+class TeamAPIViewSet(viewsets.ModelViewSet):
+    queryset = models.Team.objects.all()
+    serializer_class = serializers.TeamsSerializer
 
     def list(self, request, *args, **kwargs):
-        res = super(TeamAPIView, self).list(request, *args, **kwargs)
+        res = super(TeamAPIViewSet, self).list(request, *args, **kwargs)
         res.data = {'data': res.data}
         return res
 
 
 class CoachAPIView(generics.ListAPIView):
-    serializer_class = CoachSerializer
-    queryset = Coach.objects.all()
+    serializer_class = serializers.CoachSerializer
+    queryset = models.Coach.objects.all()
 
     def get(self, request, pk):
-        coach = Coach.objects.get(id=pk)
-        serializer = CoachSerializer(coach)
+        coach = models.Coach.objects.get(id=pk)
+        serializer = serializers.CoachSerializer(coach)
         return Response(serializer.data)
 
 
-class UserAPIView(generics.ListAPIView):
-    serializer_class = UserSerializer
-    queryset = User.objects.all()
+class UserAPIViewSet(viewsets.ModelViewSet):
+    serializer_class = serializers.UserSerializer
+    queryset = models.User.objects.all()
 
     def get(self, request, pk):
-        user = User.objects.get(id=pk)
-        serializer = UserSerializer(user)
+        user = models.User.objects.get(id=pk)
+        serializer = serializers.UserSerializer(user)
         return Response(serializer.data)
+
 
 class TournamentAPIView(generics.ListAPIView):
-    serializer_class = TournamentSerializer
-    queryset = Tournament.objects.all()
+    serializer_class = serializers.TournamentSerializer
+    queryset = models.Tournament.objects.all()
+
     def list(self, request, *args, **kwargs):
         res = super(TournamentAPIView, self).list(request, *args, **kwargs)
         res.data = {'data': res.data}
         return res
 
-class TeamOnTournamentAPIView(APIView):
-    queryset = Team.objects.all()
-    serializer_class = TeamOnTournamentSerializer
 
-    def get(self, request):
-        teamOnTournament_new = TeamOnTournament.objects.all().values()
-        return Response({'teamOnTournament': list(teamOnTournament_new)})
+class TeamOnTournamentAPIViewSet(viewsets.ModelViewSet):
+    queryset = models.Team.objects.all()
+    serializer_class = serializers.TeamOnTournamentSerializer
 
-    def post(self, request):
-        teamOnTournament_new = TeamOnTournament.objects.create(
-            tournament=request.data['tournament'],
-            team=request.data['team'],
-            league=request.data['league'],
-            subgroup=request.data['subgroup'],
-            place=request.data['place']
-        )
-        return Response({'post': model_to_dict(teamOnTournament_new)})
 
