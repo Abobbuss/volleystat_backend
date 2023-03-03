@@ -64,11 +64,17 @@ class Match(models.Model):
                                       db_column='Matches_place_id')  # Field name made lowercase.
     date = models.DateTimeField()
 
+    def __str__(self):
+        return f'{self.tournament}: {self.date}: {self.matches_place}'
+
 
 class MatchHasJudge(models.Model):
     judge = models.ForeignKey(Judge, models.DO_NOTHING, db_column='Judge_id')  # Field name made lowercase.
     match = models.ForeignKey(Match, models.DO_NOTHING, db_column='Match_id')  # Field name made lowercase.
     type = models.CharField(max_length=100)
+
+    def __str__(self):
+        return f'{self.judge}: {self.type} :{self.match.tournament}: {self.match.date}'
 
 
 class MatchPlace(models.Model):
@@ -87,14 +93,14 @@ class Media(models.Model):
 
 
 class Team(models.Model):
-    team_type = models.ForeignKey('TypeTeam', models.DO_NOTHING, db_column='Team_type_id', blank=True,
+    type = models.ForeignKey('TypeTeam', models.DO_NOTHING, db_column='Team_type_id', blank=True,
                                   null=True)  # Field name made lowercase.
     coach = models.ForeignKey(Coach, models.DO_NOTHING, db_column='Coach_id', blank=True,
                               null=True)  # Field name made lowercase.
     name = models.CharField(unique=True, max_length=100)
     photo = models.ImageField(upload_to='images/', null=True)
     logo = models.CharField(max_length=150, blank=True, null=True)
-    date_foundation = models.TextField(blank=True, null=True)  # This field type is a guess.
+    foundation_date = models.DateField(blank=True, null=True)  # This field type is a guess.
     sponsor = models.CharField(max_length=100, blank=True, null=True)
     sponsor_logo = models.CharField(max_length=100, blank=True, null=True)
 
@@ -156,6 +162,9 @@ class Receiving(models.Model):
 class Role(models.Model):
     role = models.CharField(max_length=45)
 
+    def __str__(self):
+        return self.role
+
 
 class Service(models.Model):
     type_service = models.ForeignKey('TypeService', models.DO_NOTHING, db_column='Type_service_id', blank=True,
@@ -209,7 +218,10 @@ class Subgroup(models.Model):
 class TeamOnMatch(models.Model):
     match = models.ForeignKey(Match, models.DO_NOTHING, db_column='Match_id')  # Field name made lowercase.
     team = models.ForeignKey(Team, models.DO_NOTHING, db_column='Team_id')  # Field name made lowercase.
-    score = models.IntegerField(db_column='Score')  # Field name made lowercase.
+    score = models.IntegerField(db_column='Score', default=0)  # Field name made lowercase.
+
+    def __str__(self):
+        return f'{self.match.tournament}: {self.team.name}: {self.match.date}'
 
 
 class TeamOnTournament(models.Model):

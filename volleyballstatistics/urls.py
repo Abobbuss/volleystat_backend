@@ -41,7 +41,8 @@ urlpatterns = [
              path('coach/<int:pk>/', views.CoachAPIView.as_view()),
              path('', include(routers.routerUser.urls)),
              path('tournaments', views.TournamentAPIView.as_view()),
-             path('', include(routers.routerTeamOnTournament.urls))
+             path('tournament/<int:pk>/', views.TeamsOnTournamentAPIView.as_view()),
+             path('tournament/<int:pk>/team/<int:pk2>', views.TeamOnTournamentAPIView.as_view())
          ])),
 
 ]

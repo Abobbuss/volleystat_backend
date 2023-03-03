@@ -36,11 +36,6 @@ class UserAPIViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.UserSerializer
     queryset = models.User.objects.all()
 
-    def get(self, request, pk):
-        user = models.User.objects.get(id=pk)
-        serializer = serializers.UserSerializer(user)
-        return Response(serializer.data)
-
 
 class TournamentAPIView(generics.ListAPIView):
     serializer_class = serializers.TournamentSerializer
@@ -52,8 +47,28 @@ class TournamentAPIView(generics.ListAPIView):
         return res
 
 
-class TeamOnTournamentAPIViewSet(viewsets.ModelViewSet):
-    queryset = models.Team.objects.all()
-    serializer_class = serializers.TeamOnTournamentSerializer
+class TeamsOnTournamentAPIView(generics.ListAPIView):
+    queryset = models.TeamOnTournament.objects.all()
+    serializer_class = serializers.TeamsOnTournamentSerializer
+
+    def get(self, request, pk):
+        teams = models.TeamOnTournament.objects.filter(tournament=pk)
+        serializer = serializers.TeamsOnTournamentSerializer(teams, many=True)
+        return Response(serializer.data)
+
+
+class TeamOnTournamentAPIView(generics.ListAPIView):
+    queryset = models.TeamOnTournament.objects.all()
+    serializers_class = serializers.TeamOnTournamentSerializer
+
+    def get(self, request, pk, pk2):
+        team = models.TeamOnTournament.objects.get(tournament=pk, team=pk2)
+        serializer = serializers.TeamOnTournamentSerializer(team)
+        return Response(serializer.data)
+
+
+
+
+
 
 

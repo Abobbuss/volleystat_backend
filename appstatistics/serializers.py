@@ -26,7 +26,6 @@ class CoachSerializer(serializers.ModelSerializer):
             'photo': instance.user.photo,
             'gender': instance.user.gender,
             'login': instance.user.login,
-            'password': instance.user.password,
             'category': instance.category
         }
 
@@ -45,7 +44,61 @@ class TournamentSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class TeamOnTournamentSerializer(serializers.ModelSerializer):
+class TeamsOnTournamentSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.TeamOnTournament
         fields = '__all__'
+
+    def to_representation(self, instance):
+        if instance.league or instance.subgroup is None:
+            if instance.league is None and instance.subgroup is None:
+                Subgroup = None
+                League = None
+            if instance.league is None and instance.subgroup is not None:
+                Subgroup = instance.subgroup.subgroup
+                League = None
+            if instance.league is not None and instance.subgroup is None:
+                Subgroup = None
+                League = instance.league.league
+        else:
+            Subgroup = instance.subgroup.subgroup
+            League = instance.league.league
+        return {
+            'id': instance.id,
+            'id_team': instance.team.id,
+            'team': instance.team.name,
+            'league': League,
+            'subgroup': Subgroup,
+            'place': instance.place,
+        }
+
+
+class TeamOnTournamentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.TeamOnTournament
+        fields = "__all__"
+
+    def to_representation(self, instance):
+        if instance.league or instance.subgroup is None:
+            if instance.league is None and instance.subgroup is None:
+                Subgroup = None
+                League = None
+            if instance.league is None and instance.subgroup is not None:
+                Subgroup = instance.subgroup.subgroup
+                League = None
+            if instance.league is not None and instance.subgroup is None:
+                Subgroup = None
+                League = instance.league.league
+        else:
+            Subgroup = instance.subgroup.subgroup
+            League = instance.league.league
+        return {
+            'id': instance.id,
+            'id_team': instance.team.id,
+            'team': instance.team.name,
+            'league': League,
+            'subgroup': Subgroup,
+            'place': instance.place,
+        }
+
+
