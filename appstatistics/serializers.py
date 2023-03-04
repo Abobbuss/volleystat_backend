@@ -4,12 +4,14 @@ from django.forms import model_to_dict
 
 
 class UserSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = models.User
         fields = '__all__'
 
 
 class CoachSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = models.Coach
         fields = '__all__'
@@ -39,30 +41,32 @@ class TeamsSerializer(serializers.ModelSerializer):
 
 
 class TournamentSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = models.Tournament
         fields = '__all__'
 
 
 class TeamsOnTournamentSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = models.TeamOnTournament
         fields = '__all__'
 
     def to_representation(self, instance):
-        if instance.league or instance.subgroup is None:
+        if instance.league is None or instance.subgroup is None:
             if instance.league is None and instance.subgroup is None:
                 Subgroup = None
                 League = None
             if instance.league is None and instance.subgroup is not None:
-                Subgroup = instance.subgroup.subgroup
+                Subgroup = model_to_dict(instance.subgroup)
                 League = None
             if instance.league is not None and instance.subgroup is None:
                 Subgroup = None
-                League = instance.league.league
+                League = model_to_dict(instance.league)
         else:
-            Subgroup = instance.subgroup.subgroup
-            League = instance.league.league
+            Subgroup = model_to_dict(instance.subgroup)
+            League = model_to_dict(instance.league)
         return {
             'id': instance.id,
             'id_team': instance.team.id,
@@ -71,34 +75,3 @@ class TeamsOnTournamentSerializer(serializers.ModelSerializer):
             'subgroup': Subgroup,
             'place': instance.place,
         }
-
-
-class TeamOnTournamentSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.TeamOnTournament
-        fields = "__all__"
-
-    def to_representation(self, instance):
-        if instance.league or instance.subgroup is None:
-            if instance.league is None and instance.subgroup is None:
-                Subgroup = None
-                League = None
-            if instance.league is None and instance.subgroup is not None:
-                Subgroup = instance.subgroup.subgroup
-                League = None
-            if instance.league is not None and instance.subgroup is None:
-                Subgroup = None
-                League = instance.league.league
-        else:
-            Subgroup = instance.subgroup.subgroup
-            League = instance.league.league
-        return {
-            'id': instance.id,
-            'id_team': instance.team.id,
-            'team': instance.team.name,
-            'league': League,
-            'subgroup': Subgroup,
-            'place': instance.place,
-        }
-
-

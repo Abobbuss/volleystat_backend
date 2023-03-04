@@ -36,13 +36,17 @@ urlpatterns = [
     path('teams/', views.index),
     path('api/v1/',
          include([
-             path('swagger/shema/', shema_view.with_ui('swagger', cache_timeout=0)),#Все апишки
+             path('swagger/shema/', shema_view.with_ui('swagger', cache_timeout=0)),  # Все апишки
              path('', include(routers.routerTeams.urls)),
              path('coach/<int:pk>/', views.CoachAPIView.as_view()),
              path('', include(routers.routerUser.urls)),
              path('tournaments', views.TournamentAPIView.as_view()),
              path('tournament/<int:pk>/', views.TeamsOnTournamentAPIView.as_view()),
-             path('tournament/<int:pk>/team/<int:pk2>', views.TeamOnTournamentAPIView.as_view())
+             path('tournament/<int:pk>/team/<int:pk2>/', views.TeamOnTournamentAPIView.as_view()),
+             path('tournament/<int:pk>/subgroup/<int:pk2>/', views.SubgroupOnTournamentAPIView.as_view()),
+             path('tournament/<int:pk>/league/<int:pk2>/', views.LeagueOnTournamentAPIView.as_view()),
+             path('tournament/<int:pk>/league/<int:pk2>/subgroup/<int:pk3>/',
+                  views.LeagueSubgroupOnTournamentAPIView.as_view()),
          ])),
 
 ]

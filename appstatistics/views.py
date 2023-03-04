@@ -59,15 +59,42 @@ class TeamsOnTournamentAPIView(generics.ListAPIView):
 
 class TeamOnTournamentAPIView(generics.ListAPIView):
     queryset = models.TeamOnTournament.objects.all()
-    serializers_class = serializers.TeamOnTournamentSerializer
+    serializers_class = serializers.TeamsOnTournamentSerializer
 
     def get(self, request, pk, pk2):
         team = models.TeamOnTournament.objects.get(tournament=pk, team=pk2)
-        serializer = serializers.TeamOnTournamentSerializer(team)
+        serializer = serializers.TeamsOnTournamentSerializer(team)
         return Response(serializer.data)
 
 
+class SubgroupOnTournamentAPIView(generics.ListAPIView):
+    queryset = models.TeamOnTournament.objects.all()
+    serializer_class = serializers.TeamsOnTournamentSerializer
 
+    def get(self, request, pk, pk2):
+        teams = models.TeamOnTournament.objects.filter(tournament=pk, subgroup=pk2)
+        serializer = serializers.TeamsOnTournamentSerializer(teams, many=True)
+        return Response(serializer.data)
+
+
+class LeagueOnTournamentAPIView(generics.ListAPIView):
+    queryset = models.TeamOnTournament.objects.all()
+    serializer_class = serializers.TeamsOnTournamentSerializer
+
+    def get(self, request, pk, pk2):
+        teams = models.TeamOnTournament.objects.filter(tournament=pk, league=pk2)
+        serializer = serializers.TeamsOnTournamentSerializer(teams, many=True)
+        return Response(serializer.data)
+
+
+class LeagueSubgroupOnTournamentAPIView(generics.ListAPIView):
+    queryset = models.TeamOnTournament.objects.all()
+    serializer_class = serializers.TeamsOnTournamentSerializer
+
+    def get(self, request, pk, pk2, pk3):
+        teams = models.TeamOnTournament.objects.filter(tournament=pk, league=pk2, subgroup=3)
+        serializer = serializers.TeamsOnTournamentSerializer(teams, many=True)
+        return Response(serializer.data)
 
 
 
