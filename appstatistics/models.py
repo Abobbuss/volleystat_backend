@@ -1,3 +1,4 @@
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 
@@ -94,7 +95,7 @@ class Media(models.Model):
 
 class Team(models.Model):
     type = models.ForeignKey('TypeTeam', models.DO_NOTHING, db_column='Team_type_id', blank=True,
-                                  null=True)  # Field name made lowercase.
+                             null=True)  # Field name made lowercase.
     coach = models.ForeignKey(Coach, models.DO_NOTHING, db_column='Coach_id', blank=True,
                               null=True)  # Field name made lowercase.
     name = models.CharField(unique=True, max_length=100)

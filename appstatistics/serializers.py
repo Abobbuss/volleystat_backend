@@ -32,8 +32,16 @@ class CoachSerializer(serializers.ModelSerializer):
         }
 
 
+class TypeTeamSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = models.TypeTeam
+        fields = '__all__'
+
+
 class TeamsSerializer(serializers.ModelSerializer):
     coach = CoachSerializer()
+    type = TypeTeamSerializer()
 
     class Meta:
         model = models.Team

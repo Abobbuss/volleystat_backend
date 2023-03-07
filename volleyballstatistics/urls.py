@@ -47,9 +47,10 @@ urlpatterns = [
              path('tournament/<int:pk>/league/<int:pk2>/', views.LeagueOnTournamentAPIView.as_view()),
              path('tournament/<int:pk>/league/<int:pk2>/subgroup/<int:pk3>/',
                   views.LeagueSubgroupOnTournamentAPIView.as_view()),
+             path('accounts/', include('django.contrib.auth.urls')),
          ])),
-
 ]
+
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

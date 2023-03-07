@@ -1,5 +1,6 @@
 from django.forms import model_to_dict
 from django.shortcuts import render
+from django.views.generic import CreateView
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework import viewsets
@@ -59,7 +60,7 @@ class TeamsOnTournamentAPIView(generics.ListAPIView):
 
 class TeamOnTournamentAPIView(generics.ListAPIView):
     queryset = models.TeamOnTournament.objects.all()
-    serializers_class = serializers.TeamsOnTournamentSerializer
+    serializer_class = serializers.TeamsOnTournamentSerializer
 
     def get(self, request, pk, pk2):
         team = models.TeamOnTournament.objects.get(tournament=pk, team=pk2)
@@ -95,7 +96,3 @@ class LeagueSubgroupOnTournamentAPIView(generics.ListAPIView):
         teams = models.TeamOnTournament.objects.filter(tournament=pk, league=pk2, subgroup=3)
         serializer = serializers.TeamsOnTournamentSerializer(teams, many=True)
         return Response(serializer.data)
-
-
-
-

@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-2@n%@!7+jfx^(+n*z*u=2lsg_u_x_@2xq31v44*5n233b@3j*%
 DEBUG = True
 
 ALLOWED_HOSTS = ['vparipwf.beget.tech', '127.0.0.1']
-
+# AUTH_USER_MODEL = 'appstatistics.User'
 
 # Application definition
 
@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'rest_framework_swagger',
     'drf_yasg',
     'corsheaders',
-
+    'djoser',
+    'rest_framework_simplejwt',
 ]
 
 MIDDLEWARE = [
@@ -56,6 +57,12 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+}
 
 ROOT_URLCONF = 'volleyballstatistics.urls'
 
